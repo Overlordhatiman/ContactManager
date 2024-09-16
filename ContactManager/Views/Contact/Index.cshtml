@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Contact>
+@{
+    ViewBag.Title = "Contact List";
+}
+
+<h2>Contacts List</h2>
+
+<a href="@Url.Action("Create")" class="btn btn-primary">Create New Contact</a>
+
+<!-- Search Bar -->
+<form method="get" action="@Url.Action("Index")">
+    <input type="text" id="searchInput" placeholder="Search by any column..." onkeyup="searchTable()" />
+</form>
+
+<table id="contactsTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Name <span id="sortIcon0"></span></th>
+            <th onclick="sortTable(1)">Date of Birth <span id="sortIcon1"></span></th>
+            <th onclick="sortTable(2)">Married <span id="sortIcon2"></span></th>
+            <th onclick="sortTable(3)">Phone <span id="sortIcon3"></span></th>
+            <th onclick="sortTable(4)">Salary <span id="sortIcon4"></span></th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr id="row_@contact.Id">
+                <td>@contact.Name</td>
+                <td>@contact.DateOfBirth.ToShortDateString()</td>
+                <td>@contact.Married</td>
+                <td>@contact.Phone</td>
+                <td>@contact.Salary</td>
+                <td>
+                    <form id="editForm_@contact.Id" onsubmit="editContact('@contact.Id'); return false;">
+                        <input type="text" id="editInput_@contact.Id" name="input" placeholder="Enter new values separated by commas" />
+                        <input type="submit" value="Edit" />
+                    </form>
+                    <form id="deleteForm_@contact.Id" onsubmit="deleteContact('@contact.Id'); return false;">
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // JavaScript function for filtering/searching
+    function searchTable() {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toLowerCase();
+        table = document.getElementById("contactsTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            tr[i].style.display = "none"; // Hide all rows initially
+            td = tr[i].getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = ""; // Show row if match is found
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // JavaScript function for sorting columns
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("contactsTable");
+        switching = true;
+        dir = "asc"; // Set the sorting direction to ascending
+        clearArrows();
+
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                if (dir === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+
+        // Add sorting arrow
+        document.getElementById("sortIcon" + n).innerHTML = dir === "asc" ? "↑" : "↓";
+    }
+
+    // Clear sorting arrows
+    function clearArrows() {
+        for (var i = 0; i < 5; i++) {
+            document.getElementById("sortIcon" + i).innerHTML = "";
+        }
+    }
+
+    // AJAX request for editing contact
+    function editContact(id) {
+        var inputVal = document.getElementById("editInput_" + id).value;
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Edit")',
+            data: { id: id, input: inputVal },
+            success: function (response) {
+                alert('Contact updated successfully!');
+                location.reload();
+            },
+            error: function () {
+                alert('Error updating contact');
+            }
+        });
+    }
+
+    // AJAX request for deleting contact
+    function deleteContact(id) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Delete")',
+            data: { id: id },
+            success: function (response) {
+                alert('Contact deleted successfully!');
+                document.getElementById("row_" + id).remove();
+            },
+            error: function () {
+                alert('Error deleting contact');
+            }
+        });
+    }
+</script>

@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Create Contact";
+}
+
+<h2>Create New Contact</h2>
+
+<form method="post" action="@Url.Action("Create")">
+    <label for="input">Enter contact details (Name, DateOfBirth, Married, Phone, Salary) separated by commas:</label><br />
+    <input type="text" id="input" name="input" placeholder="John Doe,1990-01-01,true,1234567890,50000.00" /><br /><br />
+    <input type="submit" value="Create" class="btn btn-primary" />
+</form>
+
+<a href="@Url.Action("Index")">Back to List</a>

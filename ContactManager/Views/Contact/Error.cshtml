@@ -1,0 +1,15 @@
+﻿@model ErrorViewModel
+@{
+    ViewBag.Title = "Error";
+}
+
+<h1 class="text-danger">Oops! Something went wrong.</h1>
+<p>Sorry for the inconvenience. Please try again later or contact support if the problem persists.</p>
+
+@if (Model != null)
+{
+    <div>
+        <h3>Error Details:</h3>
+        <p>@Model.Message</p>
+    </div>
+}

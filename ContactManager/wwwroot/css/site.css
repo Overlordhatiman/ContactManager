@@ -1,0 +1,112 @@
+/* General Page Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    position: relative;
+}
+
+    th.sortable:hover {
+        background-color: #0056b3;
+    }
+
+    th .arrow {
+        margin-left: 5px;
+        font-size: 12px;
+    }
+
+td {
+    color: #333;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+/* Input Styles */
+input[type="text"] {
+    padding: 8px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+input[type="submit"] {
+    padding: 8px 15px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+/* Form Styling */
+form {
+    margin: 10px 0;
+}
+
+/* For Create Contact button */
+.btn-primary {
+    background-color: #28a745;
+}
+
+    .btn-primary:hover {
+        background-color: #218838;
+    }
+
+/* Error message style */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin: 5px 0;
+}
